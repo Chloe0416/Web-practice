@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>Typewriter打字机</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/TypewriterJS/1.0.0/typewriter.min.js"></script>
+  </head>
+
+  <style>
+	body{
+	text-align: center;
+	padding: 250px;
+	}
+	#tb{
+	padding-top: 50%;
+	margin: 0 auto;
+	}
+
+  </style>
+  <body>
+    <div id="content">
+      
+    </div>
+    <script>
+  		var app = document.getElementById('content');
+		var typewriter = new Typewriter(content, {
+   			 loop: true
+		});
+		typewriter.typeString('Today，is a special day of March. 今天，是三月特别的一天。')
+  		 	.pauseFor(2500)
+  	 		.deleteAll()
+  	 		.typeString('I don\'t know why it has been special，我不知道为什么这就变成特别了')
+ 	  		.pauseFor(2500)
+      		.deleteAll()
+			.typeString('Maybe it\'s because it has its own name. 这可能是因为它有了专属的名字吧。')
+			.deleteAll()
+			.typeString('Would you think of what is it? 你会想到是什么吗？')
+			.pauseFor(2500)
+			.deleteAll()
+			.typeString('It is March 14th White Valentine\'s Day. 这是3月14日白色情人节。')
+			.pauseFor(2500)
+  			.deleteAll()
+  	 		.typeString('Happy Valentine\'s Day, my dear. 亲爱的，情人节快乐!')
+  	 		.start();
+    </script>
+
+  </body>
+</html>
