@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<meta charset="UTF-8">
+	<title>Multi-object moving</title>
+	<!-- 
+		多物体的运动：
+			需求：移入每个div框让宽度变为500px；
+			      移出宽度变为100px；
+
+		出现的问题：多个div公用一个计时器，当你移出第一个div时，是关闭计时器，而你马上又移入一个新的div，马上就开启计时器
+
+		解决问题：为每个div设置单独一个计时器
+
+	 -->	  
+  </head>
+  <body>
+	<style type="text/css">
+		div{
+		  width: 100px;
+		  height: 100px;
+		  background: skyblue;
+		  margin-top: 50px;
+		}
+
+	</style>
+	
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+
+	<script type="text/javascript">
+
+		// 获取div
+		var div = document.getElementsByTagName("div");
+
+		// 遍历div
+		for(var i=0; i<div.length; i++){
+
+			// 每个div单独的计时器
+			div[i].timer = null;		
+	
+			// 移入
+			div[i].onmouseover = function(){
+				startMove(this, 500);
+			}
+			// 移出
+			div[i].onmouseout = function(){
+				startMove(this, 100);
+			}
+		
+		}
+
+		// 定义运动框架
+		function startMove(obj, target){
+			//关闭计时器
+			clearInterval(obj.timer);
+			//开启计时器
+			obj.timer = setInterval(function(){
+				// 变速运动
+				var speed = (target - obj.offsetWidth)/10;
+				speed = speed>0? Math.ceil(speed) : Math.floor(speed);
+
+				// 判断是否停止运动
+				if(obj.offsetWidth == target){
+					// 停止计时器
+					clearInterval(obj.timer);
+				}else{
+					// 运动
+					obj.style.width = obj.offsetWidth + speed + "px";
+				}
+			
+			},30);
+
+		
+		}
+
+	</script>
+
+  </body>
+</html>
+
+
+
+
