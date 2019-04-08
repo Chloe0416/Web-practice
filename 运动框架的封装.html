@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<meta charset="UTF-8">
+	<title>Style Changing</title>
+
+		<!-- 
+			运动框架对哪些属性能够作用：具有等级关系（从小到大依次递增）的值
+				width height fontSize opacity margin padding borderWidth...
+		 -->
+
+
+	<style type="text/css">
+		#box1,#box2{
+		  width:100px;
+		  height:100px;
+		  background: blue;
+		  float:left;
+		  margin-left:200px;
+		  opacity:0.3;
+		  filter:alpha("opacity=40");
+		  border:1px solid pink;
+		}
+
+	</style>
+
+  </head>
+  <body>
+	<div id="box1"></div>
+	<div id="box2"></div>
+
+	<script type="text/javascript">
+		
+		// 获取box1，box2
+		var box1 = document.getElementById("box1");
+		var box2 = document.getElementById("box2");
+
+		// 注册事件
+		box1.onmouseover = function(){
+			// 先改变宽度，再改变透明度
+			startMove(this,"width",500,function(){startMove(box1,"opacity",100)});	
+		}
+		box1.onmouseout = function(){
+			startMove(this,"width",100,function(){startMove(box1,"opacity",30)});
+		}
+
+		box2.onmouseover = function(){
+			// 先改变高度，再改变宽度
+			startMove(this,"height",500,function(){startMove(box2,"width",500)});
+			//startMove(this,"opacity",100);
+		}
+		box2.onmouseout = function(){
+			startMove(this,"height",100,function(){startMove(box2,"width",100)});
+			//startMove(this,"opacity",30);
+		}
+
+	/* 
+	 * obj：要运动的对象
+	 * attr：要改变的属性（字符串）
+	 * target：目标值（number：整数）
+	 * fnEnd：回调函数（可选值）
+	 */
+
+		// 定义运动框架
+		function startMove(obj,attr,target,fnEnd){
+
+			// 关闭计时器
+			clearInterval(obj.timer);
+			// 开启计时器
+			obj.timer = setInterval(function(){
+				
+				if(attr == "opacity"){
+					var cssVal = parseFloat(getCss(obj,"opacity")*100);
+				}else{
+					// 获取属性
+					var cssVal = parseInt(getCss(obj,attr));
+				}
+				
+				// 变速运动
+				var speed = (target - cssVal)/10;
+				speed = speed>0? Math.ceil(speed) : Math.floor(speed);
+				// 判断是否停止运动
+				if(cssVal == target){
+					// 停止计时器
+					clearInterval(obj.timer);
+					//运动结束后执行的操作
+					if(fnEnd){
+						fnEnd();
+					}
+				}else{
+					// 兼容透明度
+					if(attr == "opacity"){
+						cssVal += speed;
+						obj.style.filter = "alpah(opacity="+cssVal+")";
+						obj.style.opacity = cssVal/100;
+					}else{
+						// 运动
+						obj.style[attr] = cssVal + speed + "px";
+					}
+				}
+
+			},30);
+		}
+
+		/* 
+			getCss: 获取内联和外联样式，还可以获取行间样式
+			obj：获取的对象
+			css：获取对象上的属性
+		* */
+		function getCss(obj,css){
+			return obj.currentStyle ? obj.currentStyle[css] : getComputedStyle(obj,null)[css];
+		}
+
+	</script>
+
+
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

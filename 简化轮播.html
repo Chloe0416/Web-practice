@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<meta charset="UTF-8">
+	<title></title>
+
+  </head>
+  <body>
+	<style>
+		*{
+		  margin:0;
+		  padding:0;
+		}
+		#slide{
+		  width: 400px;
+		  height: 200px;
+		  border: 1px solid red;
+		  margin: 100px auto;
+		  position: relative;
+		}
+		#slide ul{
+		  list-style: none;
+		}
+		#slide ul li{
+		  height: 200px;
+		  line-height: 200px;
+		  background: blueviolet;
+		  color: #fff;
+		  font-size: 50px;
+		  text-align: center;
+		  display: none;
+		}
+		#slide ul li.active{
+		  display: block;
+		}
+		#dot{
+		  position: absolute;
+		  bottom: 10px;
+		  left: 140px;
+		  
+		}
+		#dot p{
+		  width: 20px;
+		  height: 20px;
+		  background: lightgrey;
+		  border-radius: 10px;
+		  float: left;
+		  margin: 0 5px;
+		}
+		#dot p.active{
+		  background: grey;
+		}
+		#prev,#next{
+		  display: inline-block;
+		  width: 40px;
+		  height: 50px;
+		  text-align: center;
+		  line-height: 50px;
+		  background: rgba(0,0,0,.5);
+		  color: #fff;
+		  font-size: 30px;
+		  text-decoration: none;
+		  position: absolute;
+		  top: 75px;
+		  display: none;
+		  cursor: pointer;
+		}
+		#prev{
+		  left: 0;
+		}
+		#next{
+		  right: 0;
+		}
+	
+
+	</style>
+	<!-- 定义轮播的范围 -->
+	<div id="slide">	
+		<ul id="box">
+			<li class="active">1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+		</ul>
+		<div id="dot">
+			<p></p>
+			<p></p>
+			<p></p>
+			<p></p>
+		</div>
+
+		<a id="prev">&lt;</a>
+		<a id="next">&gt;</a>
+	</div>
+	
+	<script type="text/javascript">
+		
+	  // 需求：每隔1500毫秒更换一次内容
+		
+		//定义变量保存
+		var n = 0;
+
+		// 获取li
+		var box =  document.getElementById("box");
+		var boxLi = box.getElementsByTagName("li");
+		// 获取p
+		var dot = document.getElementById("dot");
+		var dotP = dot.getElementsByTagName("p");
+
+		// 获取slide框
+		var slide = document.getElementById("slide");
+
+		// 获取上下按钮
+		var next = document.getElementById("next");
+		var prev = document.getElementById("prev");
+
+		// 为slide注册事件
+		slide.onmouseover = function(){
+			clearInterval(timer);
+			next.style.display = "block";
+			prev.style.display = "block";	
+		}
+		slide.onmouseout = function(){
+			timer = setInterval(slideDown,1500);
+			next.style.display = "none";
+			prev.style.display = "none";
+		}
+		
+		// 点击next向下运动
+		next.onclick = slideDown;
+
+		// 点击prev向上运动
+		prev.onclick = slideUp;
+
+		// 给每个p标签注册事件
+		for(var i=0; i<dotP.length; i++){
+		
+			//建立对应关系
+			dotP[i].index = i;
+
+			dotP[i].onclick = function(){
+
+				// 解决点击后移出的bug
+				n = this.index;
+			
+				//先清除所以显示的内容
+				for(var j=0; j<boxLi.length; j++){
+					boxLi[j].className = "";
+					dotP[j].className = "";
+				}
+
+				//再把当前的内容显示
+				boxLi[this.index].className = "active";
+				dotP[this.index].className = "active";
+			}
+		}
+		
+
+		//定义计时器
+		var timer = setInterval(slideDown,1500);
+
+	
+		// 定义向下运动
+		function slideDown(){
+			// 通过n递增变化内容	
+			n++;
+			
+			//判断n的值，达到循环显示的内容
+			if(n == boxLi.length){
+				n = 0;
+			}
+
+			//先清除所以显示的内容
+			for(var i=0; i<boxLi.length; i++){
+				boxLi[i].className = "";
+				dotP[i].className = "";
+			}
+
+			//再把当前的内容显示
+			boxLi[n].className = "active";
+			dotP[n].className = "active";
+
+		}
+
+		// 定义向上运动
+		function slideUp(){
+			// 通过n递增变化内容	
+			n--;
+			
+			//判断n的值，达到循环显示的内容
+			if(n < 0){
+				n = boxLi.length-1;
+			}
+
+			//先清除所以显示的内容
+			for(var i=boxLi.length-1; i>=0; i--){
+				boxLi[i].className = "";
+				dotP[i].className = "";
+			}
+
+			//再把当前的内容显示
+			boxLi[n].className = "active";
+			dotP[n].className = "active";
+
+		}	
+
+	</script>
+
+
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
